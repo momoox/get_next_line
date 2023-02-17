@@ -9,11 +9,14 @@ char	*get_next_line(int fd)
 
 	onum = BUFFER_SIZE;
 	i = 0;
-	//stock ecrase ce qui a etait deja copié dessus
+	stock = malloc(sizeof(char) * BUFFER_SIZE + 1);
 	while (onum == BUFFER_SIZE)
 	{
 		onum = read(fd, buffer, BUFFER_SIZE);
-		stock[i] = *ft_strjoin(buffer);
+		buffer[onum] = '\0';
+		if (ft_memchr(buffer, '\n', ft_strlen(buffer)))
+			break;
+		stock = ft_strjoin(stock, buffer);
 		i++;
 	}
 	stock[i] = '\0';
@@ -22,7 +25,7 @@ char	*get_next_line(int fd)
 
 int	main()
 {
-	int	fd = open("texte.txt", O_RDONLY);
+	int	fd = open("text2.txt", O_RDONLY);
 
 	printf("%s\n", get_next_line(fd));
 	close(fd);
