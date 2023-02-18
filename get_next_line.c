@@ -19,6 +19,7 @@ char	*get_next_line(int fd)
 		stock = ft_strjoin(stock, buffer);
 		i++;
 	}
+	// stock[ft_strlen(stock)] a tester
 	stock[i] = '\0';
 	return (stock);
 }
