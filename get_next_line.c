@@ -4,24 +4,26 @@ char	*get_next_line(int fd)
 {
 	char 			buffer[BUFFER_SIZE + 1];
 	static char		*stock;
+	char			*stack;
 	int				onum;
-	int				i;
 
 	onum = BUFFER_SIZE;
-	i = 0;
+	stack = NULL;
 	stock = malloc(sizeof(char) * BUFFER_SIZE + 1);
 	while (onum == BUFFER_SIZE)
 	{
 		onum = read(fd, buffer, BUFFER_SIZE);
-		buffer[onum] = '\0';
 		if (ft_memchr(buffer, '\n', ft_strlen(buffer)))
-			break;
+		{
+			stock = ft_strjoin(stock, buffer);
+			stack[ft_strlen(stock)] = stock[ft_strlen(stock)];
+			return (stack);
+		}
 		stock = ft_strjoin(stock, buffer);
-		i++;
 	}
-	// stock[ft_strlen(stock)] a tester
-	stock[i] = '\0';
-	return (stock);
+	stock[ft_strlen(stock) + 1] = '\0';
+	stack[ft_strlen(stock)] = stock[ft_strlen(stock)];
+	return (stack);
 }
 
 int	main()

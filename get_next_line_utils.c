@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   get_next_line_utils.c                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mgeisler <mgeisler@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/02/20 16:55:42 by mgeisler          #+#    #+#             */
+/*   Updated: 2023/02/20 16:55:42 by mgeisler         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "get_next_line.h"
 
 int	ft_strlen(char  *s)
@@ -12,19 +24,15 @@ int	ft_strlen(char  *s)
     return (i);
 }
 
-void	*ft_memchr(const void *memb, int search, size_t size)
+char	*ft_memchr(char *memb, int search, size_t size)
 {
 	size_t			i;
-	unsigned char	srch;
-	unsigned char	*str;
 
 	i = 0;
-	srch = (unsigned char) search;
-	str = (unsigned char *) memb;
 	while (i < size)
 	{
-		if (str[i] == srch)
-			return (&str[i]);
+		if (memb[i] == search)
+			return (&memb[i]);
 		i++;
 	}
 	return (NULL);
@@ -52,7 +60,11 @@ char	*ft_strjoin(char *s1, char *s2)
 		}
 	}
 	while (s2[j])
+	{
+		if (s2[j - 1] == '\n')
+			break;
 		str[i++] = s2[j++];
+	}
 	str[i] = '\0';
 	return (str);
 }
