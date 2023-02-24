@@ -24,7 +24,7 @@ int	ft_strlen(char  *s)
     return (i);
 }
 
-char	*ft_memchr(char *memb, int search, size_t size)
+int		ft_memchr(char *memb, int search, size_t size)
 {
 	size_t			i;
 
@@ -32,10 +32,24 @@ char	*ft_memchr(char *memb, int search, size_t size)
 	while (i < size)
 	{
 		if (memb[i] == search)
-			return (&memb[i]);
+			return (i);
 		i++;
 	}
-	return (NULL);
+	return (0);
+}
+
+char	*ft_strcpy(char *dest, char *src)
+{
+	int	i;
+
+	i = 0;
+	while (src[i] != '\0')
+	{
+		dest[i] = src[i];
+		i++;
+	}
+	dest[i] = '\0';
+	return (dest);
 }
 
 char	*ft_strjoin(char *s1, char *s2)
@@ -59,12 +73,9 @@ char	*ft_strjoin(char *s1, char *s2)
 			i++;
 		}
 	}
-	while (s2[j])
-	{
-		if (s2[j - 1] == '\n')
-			break;
+	while (s2[j] && s2[j - 1] != '\n')
 		str[i++] = s2[j++];
-	}
 	str[i] = '\0';
+	free(s1);
 	return (str);
 }
