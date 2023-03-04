@@ -33,8 +33,10 @@ char	*get_next_line(int fd)
 {
 	static char 	buffer[BUFFER_SIZE + 1];
 	char			*stock;
+	char			*stack;
 	int				onum;
 
+	stack = 0;
 	onum = BUFFER_SIZE;
 	stock = malloc(sizeof(char) * BUFFER_SIZE + 1);
 	if (!stock)
@@ -44,7 +46,7 @@ char	*get_next_line(int fd)
 	{
 		onum = read(fd, buffer, BUFFER_SIZE);
 		buffer[onum] = '\0';
-		if (onum <= 0)
+		if (onum < 0)
 		{
 			free(stock);
 			return (NULL);
@@ -52,23 +54,33 @@ char	*get_next_line(int fd)
 		if (ft_memchr(buffer, '\n', ft_strlen(buffer)))
 		{
 			stock = ft_strjoin(stock, buffer);
+			stack = ft_strdup(stock);
 			if (buffer[0] != '\0')
 				ft_buf(buffer);
-			return (stock);
+			return (stack);
+		}
+		if (buffer[0] == '\0' && !stack)
+		{
+			free(stock);
+			return (NULL);
 		}
 		stock = ft_strjoin(stock, buffer);
 	}
-	//stock[ft_strlen(stock)] = '\0';
-	return (stock);
+	stack = ft_strdup(stock);
+	return (stack);
 }
 
 // int	main()
 // {
 // 	int	fd = open("test.txt", O_RDONLY);
 
-// 	printf("%s\n", get_next_line(fd));
-// 	printf("%s\n", get_next_line(fd));
-// 	printf("%s\n", get_next_line(fd));
+// 	printf("%s", get_next_line(fd));
+// 	printf("%s", get_next_line(fd));
+// 	printf("%s", get_next_line(fd));
+// 	printf("%s", get_next_line(fd));
+// 	printf("%s", get_next_line(fd));
+// 	printf("%s", get_next_line(fd));
+// 	printf("%s", get_next_line(fd));
 // 	close(fd);
 // 	return (0);
 // }
