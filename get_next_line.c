@@ -12,20 +12,36 @@
 
 #include "get_next_line.h"
 
+int	ft_memchr2(char *memb, int search, size_t size)
+{
+	size_t			i;
+
+	i = 0;
+	while (i < size)
+	{
+		if (memb[i] == search)
+			return (i);
+		i++;
+	}
+	return (0);
+}
+
 char	*ft_buf(char *buffer)
 {
 	int	i;
 	int j;
 
 	j = 0;
-	i = ft_memchr(buffer, '\n', ft_strlen(buffer)) + 1;
-	while (buffer[i - 1])
+	i = ft_memchr2(buffer, '\n', ft_strlen(buffer)) + 1;
+	while (buffer[i])
 	{
 		buffer[j] = buffer[i];
 		i++;
 		j++;
 	}
-	buffer[j] = '\0';
+	buffer[j++] = '\0';
+	while(buffer[j])
+		buffer[j++] = '\0';
 	return (buffer);
 }
 
@@ -33,41 +49,37 @@ char	*get_next_line(int fd)
 {
 	static char 	buffer[BUFFER_SIZE + 1];
 	char			*stock;
-	char			*stack;
 	int				onum;
 
-	stack = 0;
 	onum = BUFFER_SIZE;
+	if (read(fd, 0, 0) < 0)
+		return (0);
 	stock = malloc(sizeof(char) * BUFFER_SIZE + 1);
 	if (!stock)
 		return (0);
-	ft_strcpy(stock, buffer);
+	if (buffer[0] != '\n')
+		ft_strcpy(stock, buffer);
 	while (onum == BUFFER_SIZE)
 	{
 		onum = read(fd, buffer, BUFFER_SIZE);
 		buffer[onum] = '\0';
-		if (onum < 0)
-		{
-			free(stock);
-			return (NULL);
-		}
 		if (ft_memchr(buffer, '\n', ft_strlen(buffer)))
 		{
 			stock = ft_strjoin(stock, buffer);
-			stack = ft_strdup(stock);
 			if (buffer[0] != '\0')
 				ft_buf(buffer);
-			return (stack);
-		}
-		if (buffer[0] == '\0' && !stack)
-		{
-			free(stock);
-			return (NULL);
+			return (stock);
 		}
 		stock = ft_strjoin(stock, buffer);
+		if (onum < 0)
+			return(stock);
+		if (stock[0] == '\0')
+		{
+			free(stock);
+			return (0);
+		}
 	}
-	stack = ft_strdup(stock);
-	return (stack);
+	return (stock);
 }
 
 // int	main()

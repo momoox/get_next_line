@@ -70,8 +70,14 @@ char	*ft_strjoin(char *s1, char *s2)
 		str[i] = s1[i];
 		i++;
 	}
-	while (s2[j] && s2[j - 1] != '\n')
+//	while (s2[j] && s2[j - 1] != '\n')
+//		str[i++] = s2[j++];
+	while (s2[j])
+	{
 		str[i++] = s2[j++];
+		if (str[i - 1] == '\n')
+		break ;
+	}
 	str[i] = '\0';
 	free(s1);
 	return (str);
