@@ -86,11 +86,13 @@ char	*get_next_line(int fd)
 		return (0);
 	while (onum == BUFFER_SIZE)
 	{
-		onum = read(fd, buffer, BUFFER_SIZE);
+		if (!buffer[0])
+			onum = read(fd, buffer, BUFFER_SIZE);
 		if (onum == -1)
 		{
 			free(stock);
 			stock = NULL;
+			free(buffer);
 			return (NULL);
 		}
 		buffer[onum] = '\0';
@@ -109,20 +111,25 @@ char	*get_next_line(int fd)
 			return (0);
 		}
 	}
+	if (ft_strlen(buffer) < BUFFER_SIZE)
+	{
+		buffer[0] = '\0';
+	}
 	return (stock);
 }
 
-// int	main()
-// {
-// 	int	fd = open("test.txt", O_RDONLY);
+// tu lis dans une variable temporaire, ten qta pa de \n dans ta var, tu la concatene avec ton buffer static, /n = cpncatene une derniere fois, envoi dans stock ce qui est necessaire, buffer en ordre, puis renvoie stock
+int	main()
+{
+	int	fd = open("test.txt", O_RDONLY);
 
-// 	printf("%s", get_next_line(fd));
-// 	printf("%s", get_next_line(fd));
-// 	printf("%s", get_next_line(fd));
-// 	printf("%s", get_next_line(fd));
-// 	printf("%s", get_next_line(fd));
-// 	printf("%s", get_next_line(fd));
-// 	printf("%s", get_next_line(fd));
-// 	close(fd);
-// 	return (0);
-// }
+	printf("%s", get_next_line(fd));
+	printf("%s", get_next_line(fd));
+	printf("%s", get_next_line(fd));
+	printf("%s", get_next_line(fd));
+	printf("%s", get_next_line(fd));
+	printf("%s", get_next_line(fd));
+	printf("%s", get_next_line(fd));
+	close(fd);
+	return (0);
+}
